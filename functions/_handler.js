@@ -10,7 +10,7 @@ const {
   countyFilter,
   cityFilter,
   countryDatasourceReducer
-} = require('./utils/functions')
+} = require('./_utils/functions')
 
 async function getDynamoData() {
   const AWS = require('aws-sdk')
@@ -34,7 +34,7 @@ async function getDynamoData() {
 }
 
 module.exports.respond = function(event, callback) {
-  const redis = require('./redis')()
+  const redis = require('./_utils/redis')()
 
   const today = new Date()
   const year = today.getFullYear()

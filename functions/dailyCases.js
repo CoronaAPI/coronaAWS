@@ -37,7 +37,7 @@
 //   };
 // };
 
-const lib = require('./handler')
+const lib = require('./_handler')
 
 module.exports.handler = function(event, context) {
   lib.respond(event, (err, res) => {
