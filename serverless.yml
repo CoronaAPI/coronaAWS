@@ -39,5 +39,11 @@ functions:
     handler: functions/daily.handler
     events:
       - http:
-          path: dailyCases
+          path: daily
+          method: get
+  meta:
+    handler: functions/meta.handler
+    events:
+      - http:
+          path: meta
           method: get
