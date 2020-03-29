@@ -1,5 +1,7 @@
 node_modules
+.env
+*.zip
+/dist
 
 # Local Netlify folder
 .netlify
-.env
