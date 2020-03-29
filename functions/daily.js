@@ -90,7 +90,7 @@ exports.handler = function(event, context, callback) {
           console.log('Redis key not found')
           const body = getDynamoData()
           body.then((data) => {
-            console.log('Pre Filter: ', JSON.stringify(data).substr(0, 100))
+            console.log('Pre Filter: ', JSON.stringify(data).substr(0, 90))
             let returnBody = data
             if (queryKeys !== '') {
               returnBody = data
