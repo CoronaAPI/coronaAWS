@@ -33,8 +33,8 @@ async function getDynamoData() {
   return body
 }
 
-module.exports.respond = function(event, callback) {
-  const redis = require('./redis')()
+exports.handler = function(event, context, callback) {
+  const redis = require('./utils/redis')()
 
   const today = new Date()
   const year = today.getFullYear()
@@ -74,18 +74,6 @@ module.exports.respond = function(event, callback) {
 
   let error, response
 
-  redis.on('end', () => {
-    const respArray = {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(response),
-      isBase64Encoded: false
-    }
-    callback(error, respArray)
-  })
-
   redis.on('ready', function() {
     redis.get(key, (err, res) => {
       if (err) {
@@ -103,14 +91,17 @@ module.exports.respond = function(event, callback) {
           const body = getDynamoData()
           body.then((data) => {
             console.log('Pre Filter: ', JSON.stringify(data).substr(0, 100))
-            const returnBody = data
-              .map(coronaDataMapper)
-              .filter(ratingFilter(minRating))
-              .filter(countryFilter(countryParam))
-              .filter(stateFilter(stateParam))
-              .filter(countyFilter(countyParam))
-              .filter(cityFilter(cityParam))
-              .filter(sourceFilter(source))
+            let returnBody = data
+            if (queryKeys !== '') {
+              returnBody = data
+                .map(coronaDataMapper)
+                .filter(ratingFilter(minRating))
+                .filter(countryFilter(countryParam))
+                .filter(stateFilter(stateParam))
+                .filter(countyFilter(countyParam))
+                .filter(cityFilter(cityParam))
+                .filter(sourceFilter(source))
+            }
             console.log(
               'Post Filter: ',
               JSON.stringify(returnBody).substr(0, 100)
@@ -130,5 +121,19 @@ module.exports.respond = function(event, callback) {
         }
       }
     })
+  })
+  redis.on('end', () => {
+    if (error) {
+      return context.fail(error)
+    }
+    const respArray = {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(response),
+      isBase64Encoded: false
+    }
+    return context.succeed(respArray)
   })
 }

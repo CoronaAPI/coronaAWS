@@ -1,0 +1,43 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+service: corona-api
+org: ndom91
+app: corona-api
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: dev
+  region: eu-central-1
+
+  environment:
+    REDIS_PASS: ${ssm:/REDIS_PASS~true}
+    REDIS_PORT: ${ssm:/REDIS_PORT~true}
+    REDIS_URL: ${ssm:/REDIS_URL~true}
+
+package:
+  include:
+    - index.js
+    - handler.js
+    - redis.js
+    - package.json
+    - utils/**
+    - node_modules/**
+
+functions:
+  dailyCases-3:
+    handler: functions/daily.handler
+    events:
+      - http:
+          path: dailyCases
+          method: get
