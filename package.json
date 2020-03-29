@@ -11,7 +11,10 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "repository": "https://github.com/ndom91/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ndom91/coronaAWS.git"
+  },
   "dependencies": {
     "aws-sdk": "^2.648.0",
     "redis": "^3.0.2",
