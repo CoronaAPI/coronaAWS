@@ -5,14 +5,27 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "deploy": "dpl"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": "https://github.com/ndom91/",
   "dependencies": {
     "aws-sdk": "^2.648.0",
     "redis": "^3.0.2",
     "redis-jsonify": "^1.2.0"
-  }
+  },
+  "devDependencies": {
+    "dpl": "^4.0.0"
+  },
+  "files_to_deploy": [
+    "package.json",
+    "index.js",
+    "handler.js",
+    "redis.js",
+    "utils/",
+    "node_modules/"
+  ]
 }
