@@ -1,14 +1,18 @@
 {
   "name": "corona-api-lambda",
   "version": "1.0.0",
-  "description": "",
+  "description": "CoronaAPI",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
     "deploy": "dpl"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "AWS",
+    "Lambda",
+    "Serverless"
+  ],
+  "author": "Nico Domino <yo@ndo.dev>",
   "license": "MIT",
   "repository": {
     "type": "git",
