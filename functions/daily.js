@@ -1,18 +1,14 @@
 const {
   coronaDataMapper,
-  casesMap,
-  recoveredMap,
-  deathMap,
   ratingFilter,
   sourceFilter,
   countryFilter,
   stateFilter,
   countyFilter,
-  cityFilter,
-  countryDatasourceReducer
+  cityFilter
 } = require('./utils/functions')
 
-async function getDynamoData() {
+async function getDynamoData () {
   const AWS = require('aws-sdk')
   const dynamo = new AWS.DynamoDB.DocumentClient()
 
@@ -20,7 +16,6 @@ async function getDynamoData() {
   const year = today.getFullYear()
   const month = `${today.getMonth() + 1}`.padStart(2, 0)
   const day = `${today.getDate()}`.padStart(2, 0)
-  const stringDate = [year, month, day].join('-')
   const TableData = await dynamo
     .scan({
       TableName:
@@ -33,7 +28,7 @@ async function getDynamoData() {
   return body
 }
 
-exports.handler = function(event, context, callback) {
+exports.handler = function (event, context, callback) {
   const redis = require('./utils/redis')()
 
   const today = new Date()
@@ -74,7 +69,7 @@ exports.handler = function(event, context, callback) {
 
   let error, response
 
-  redis.on('ready', function() {
+  redis.on('ready', function () {
     redis.get(key, (err, res) => {
       if (err) {
         redis.quit(() => {

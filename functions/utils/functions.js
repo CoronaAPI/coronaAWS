@@ -41,7 +41,7 @@ const coronaDataMapper = (coronaData) => {
 }
 
 const ratingFilter = (minRating) => {
-  if (minRating == undefined) {
+  if (minRating === undefined) {
     return _ => true
   }
 
@@ -50,7 +50,7 @@ const ratingFilter = (minRating) => {
 
 const countryFilter = (allowedCountry) => {
   console.log('AllowedCountry: ', allowedCountry)
-  if (allowedCountry == undefined) {
+  if (allowedCountry === undefined) {
     return _ => true
   }
 
@@ -58,7 +58,7 @@ const countryFilter = (allowedCountry) => {
 }
 
 const stateFilter = (state) => {
-  if (state == undefined) {
+  if (state === undefined) {
     return _ => true
   }
 
@@ -66,7 +66,7 @@ const stateFilter = (state) => {
 }
 
 const countyFilter = (county) => {
-  if (county == undefined) {
+  if (county === undefined) {
     return _ => true
   }
 
@@ -74,7 +74,7 @@ const countyFilter = (county) => {
 }
 
 const cityFilter = (city) => {
-  if (city == undefined) {
+  if (city === undefined) {
     return _ => true
   }
 
@@ -82,7 +82,7 @@ const cityFilter = (city) => {
 }
 
 const sourceFilter = (source) => {
-  if (source == undefined) {
+  if (source === undefined) {
     return _ => true
   }
 
@@ -134,4 +134,3 @@ exports.countyFilter = countyFilter
 exports.cityFilter = cityFilter
 exports.sourceFilter = sourceFilter
 exports.countryDatasourceReducer = countryDatasourceReducer
-
