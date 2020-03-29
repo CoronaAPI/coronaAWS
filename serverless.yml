@@ -47,3 +47,9 @@ functions:
       - http:
           path: meta
           method: get
+  flushredis:
+    handler: functions/flushredis.handler
+    events:
+      - http:
+          path: flushredis
+          method: get
