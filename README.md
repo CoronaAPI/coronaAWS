@@ -2,10 +2,10 @@
 
 # 🦠 Corona API 
 
-![Version](https://img.shields.io/github/package-json/v/coronaapi/coronaapi?style=flat-square)
+<!-- ![Version](https://img.shields.io/github/package-json/v/coronaapi/coronaapi?style=flat-square)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/coronaapi/coronaapi?label=commits&style=flat-square)
 ![GitHub issues](https://img.shields.io/github/issues-raw/coronaapi/coronaapi?style=flat-square)
-![Website](https://img.shields.io/website?down_color=lightgrey&down_message=offline&style=flat-square&up_color=green&up_message=online&url=https%3A%2F%2Fdata.corona-api.org)
+![Website](https://img.shields.io/website?down_color=lightgrey&down_message=offline&style=flat-square&up_color=green&up_message=online&url=https%3A%2F%2Fdata.corona-api.org) -->
 
 ### #WirVsVirus Project 0193
 
@@ -32,9 +32,7 @@ HTTP Corona API based on the great work of [@lazd/coronadatascraper](https://git
 ## 📐 Architecture
 
 ```
-aws.corona-api.org --> AWS API Gateway --> Lambda Functions -?-> Redis
-                                                  |
-                                                  ↳ DynamoDB
+User -- Request --> aws.corona-api.org --> AWS API Gateway --> Lambda Functions -?-> Redis --> DynamoDB 
 ```
 
 ## ⚙️ Implementations
