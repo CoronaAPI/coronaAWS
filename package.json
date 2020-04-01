@@ -22,7 +22,8 @@
     "aws-sdk": "^2.648.0",
     "isomorphic-unfetch": "^3.0.0",
     "redis": "^3.0.2",
-    "redis-jsonify": "^1.2.0"
+    "redis-jsonify": "^1.2.0",
+    "uuidv4": "^6.0.7"
   },
   "devDependencies": {
     "standard": "^14.3.3"
