@@ -4,3 +4,6 @@ node_modules
 /dist
 
 .serverless
+
+s_*.js
+serverless_sdk/

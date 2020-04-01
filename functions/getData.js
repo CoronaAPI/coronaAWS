@@ -64,7 +64,7 @@ exports.handler = (event, context, callback) => {
           }
         } catch (err) {
           console.error('Error: ', err)
-          return { status: 500, msg: err }
+          return { status: 500, msg: `Error: ${err}` }
         }
       })
     )
