@@ -19,11 +19,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
-      Resource:
-        {
-          "Fn::Join":
-            ["", ["arn:aws:s3:::", { "Ref": "corona-api-json-content" }]],
-        }
+      Resource: "arn:aws:s3:::corona-api-json-content"
 
   stage: dev
   region: eu-central-1
