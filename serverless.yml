@@ -32,11 +32,8 @@ provider:
 
 package:
   include:
-    - index.js
-    - handler.js
-    - redis.js
     - package.json
-    - utils/**
+    - functions/**
     - node_modules/**
 
 functions:
