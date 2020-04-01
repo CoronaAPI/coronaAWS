@@ -5,8 +5,6 @@ exports.handler = async (event, context, callback) => {
   const AWS = require('aws-sdk')
   const docClient = new AWS.DynamoDB.DocumentClient()
   const uuidv4 = require('uuid/v4')
-  // const { getS3object, putS3object } = require('./utils/s3')
-
   const ddbTable = process.env.DDBtable
 
   const today = new Date()
@@ -14,7 +12,6 @@ exports.handler = async (event, context, callback) => {
   const month = `${today.getMonth() + 1}`.padStart(2, 0)
   const day = `${today.getDate()}`.padStart(2, 0)
   const stringDate = [year, month, day].join('-')
-  // const fileDate = [year, month, day].join('')
 
   const uploadJSONtoDynamoDB = async (data) => {
     // Separate into batches for upload
@@ -62,12 +59,8 @@ exports.handler = async (event, context, callback) => {
           console.log('Trying batch: ', batchCount)
           const result = await docClient.batchWrite(params).promise()
           console.log('Success: ', result)
-          // if (batchCount === batches.length) {
-          //   return { status: 200, msg: `${batches.length} ${batchCount} written` }
-          // }
         } catch (err) {
           console.error('Error: ', err)
-          // return { status: 500, msg: `Error: ${err}` }
         }
       })
     )
@@ -96,18 +89,5 @@ exports.handler = async (event, context, callback) => {
       } else {
         return context.fail(response({ status: 500, msg: result }))
       }
-      // const params = {
-      //   Bucket: process.env.BUCKET_NAME,
-      //   Key: `data-json-${fileDate}.json`,
-      //   Body: JSON.stringify(data)
-      // }
-      // s3.putObject(params, (err, data) => {
-      //   if (err) {
-      //     console.error(err)
-      //     return context.fail(response({ status: 500, msg: err }))
-      //   } else {
-      //     return context.succeed(response({ status: 200, msg: data }))
-      //   }
-      // })
     })
 }

@@ -9,7 +9,7 @@
 
 ### #WirVsVirus Project 0193
 
-HTTP Corona API based on the great work of [@lazd/coronadatascraper](https://github.com/lazd/coronadatascraper).
+HTTP Corona API based on the great work of [covidatlas/coronadatascraper](https://github.com/covidatlas/coronadatascraper).
 
 #### 💌 Join our [Slack](https://join.slack.com/t/corona-api/shared_invite/zt-d3q97q52-2~0Jh7YV1WHVDY~TpENVtg)
 
@@ -39,7 +39,7 @@ User -- Request --> aws.corona-api.org --> AWS API Gateway --> Lambda Functions 
 
 - R Library [paulvern/covid19]( https://github.com/paulvern/covid19/tree/master/readcorona )
 
-## 👀 Status
+## 📈 Status
 
 [Hyperping](https://status.corona-api.org)
 
@@ -47,7 +47,12 @@ User -- Request --> aws.corona-api.org --> AWS API Gateway --> Lambda Functions 
 
 <table>
   <tr>
-    <td align="center"><a href="https://ndo.dev"><img src="https://avatars2.githubusercontent.com/u/7415984?v=4" width="100px;" alt=""/><br /><sub><b>Nico Domino</b></sub></a><br /><a href="https://github.com/all-contributors/all-contributors/commits?author=ndom91" title="Documentation">📖</a> <a href="#tool-jakebolam" title="Tools">🔧</a> <a href="#infra-ndom91" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-ndom91" title="Maintenance">🚧</a><a href="#design-ndom91" title="Design">🎨</a></td>
+    <td align="center">
+      <a href="https://ndo.dev"><img src="https://avatars2.githubusercontent.com/u/7415984?v=4" width="100px;" alt=""/><br /><sub><b>Nico Domino</b></sub></a><br /><a href="https://github.com/all-contributors/all-contributors/commits?author=ndom91" title="Documentation">📖</a> <a href="#tool-jakebolam" title="Tools">🔧</a> <a href="#infra-ndom91" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-ndom91" title="Maintenance">🚧</a><a href="#design-ndom91" title="Design">🎨</a><a href="#code-ndom91" title="Code">💻</a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/martiL"><img src="https://avatars2.githubusercontent.com/u/5569498?v=4" width="100px;" alt=""/><br /><sub><b>Martin Lux</b></sub></a><br /><a href="#code-ndom91" title="Code">💻</a>
+    </td>
   </tr>
 </table>
 

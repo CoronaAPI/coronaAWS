@@ -64,3 +64,9 @@ functions:
       - http:
           path: getData
           method: get
+  total:
+    handler: functions/total.handler
+    events:
+      - http:
+          path: total
+          method: get
