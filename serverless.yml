@@ -15,7 +15,7 @@ provider:
         - dynamodb:Query
         - dynamodb:Scan
         - dynamodb:GetItem
-      Resource: "arn:aws:dynamodb:eu-central-1:392655045323:table/serverlessrepo-s3-to-dynamodb-importer-json-DDBtable-QF81U10PRNS6"
+      Resource: "arn:aws:dynamodb:eu-central-1:392655045323:table/corona1"
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
