@@ -8,7 +8,7 @@ const {
   cityFilter
 } = require('./utils/functions')
 
-async function getDynamoData () {
+async function getDynamoData() {
   const AWS = require('aws-sdk')
   const dynamo = new AWS.DynamoDB.DocumentClient()
 
@@ -18,8 +18,7 @@ async function getDynamoData () {
   const day = `${today.getDate()}`.padStart(2, 0)
   const TableData = await dynamo
     .scan({
-      TableName:
-        'serverlessrepo-s3-to-dynamodb-importer-json-DDBtable-QF81U10PRNS6'
+      TableName: process.env.DDBtable
     })
     .promise()
   const body = TableData.Items.filter(

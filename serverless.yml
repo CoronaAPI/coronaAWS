@@ -29,7 +29,7 @@ provider:
     REDIS_PORT: ${ssm:/REDIS_PORT~true}
     REDIS_URL: ${ssm:/REDIS_URL~true}
     BUCKET_NAME: "corona-api-json-content"
-    DDBtable: "coronaapi"
+    DDBtable: "corona1"
     DDBtable2: "serverlessrepo-s3-to-dynamodb-importer-json-DDBtable-QF81U10PRNS6"
 
 package:

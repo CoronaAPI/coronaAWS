@@ -1,9 +1,11 @@
-exports.handler = (event, context, callback) => {
+// https://github.com/jbesw/reinvent-svs214/blob/master/3-dynamodb/importFunction/app.js
+
+exports.handler = async (event, context, callback) => {
   const fetch = require('isomorphic-unfetch')
   const AWS = require('aws-sdk')
   const docClient = new AWS.DynamoDB.DocumentClient()
   const uuidv4 = require('uuid/v4')
-  const { getS3object, putS3object } = require('./utils/s3')
+  // const { getS3object, putS3object } = require('./utils/s3')
 
   const ddbTable = process.env.DDBtable
 
@@ -12,7 +14,7 @@ exports.handler = (event, context, callback) => {
   const month = `${today.getMonth() + 1}`.padStart(2, 0)
   const day = `${today.getDate()}`.padStart(2, 0)
   const stringDate = [year, month, day].join('-')
-  const fileDate = [year, month, day].join('')
+  // const fileDate = [year, month, day].join('')
 
   const uploadJSONtoDynamoDB = async (data) => {
     // Separate into batches for upload
@@ -43,6 +45,7 @@ exports.handler = (event, context, callback) => {
           }
 
           // Build params
+          console.log(item)
           params.RequestItems[ddbTable].push({
             PutRequest: {
               Item: {
@@ -59,12 +62,12 @@ exports.handler = (event, context, callback) => {
           console.log('Trying batch: ', batchCount)
           const result = await docClient.batchWrite(params).promise()
           console.log('Success: ', result)
-          if (batchCount === batches.length) {
-            return { status: 200, msg: `${batches.length} ${batchCount} written` }
-          }
+          // if (batchCount === batches.length) {
+          //   return { status: 200, msg: `${batches.length} ${batchCount} written` }
+          // }
         } catch (err) {
           console.error('Error: ', err)
-          return { status: 500, msg: `Error: ${err}` }
+          // return { status: 500, msg: `Error: ${err}` }
         }
       })
     )
@@ -88,10 +91,10 @@ exports.handler = (event, context, callback) => {
         entry.date = stringDate
       })
       const result = uploadJSONtoDynamoDB(data)
-      if (result.status === 200) {
-        return context.succeed(response({ status: 200, msg: result.msg }))
+      if (result) {
+        return context.succeed(response({ status: 200, msg: result }))
       } else {
-        return context.fail(response({ status: 500, msg: result.msg }))
+        return context.fail(response({ status: 500, msg: result }))
       }
       // const params = {
       //   Bucket: process.env.BUCKET_NAME,
