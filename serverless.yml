@@ -31,7 +31,6 @@ provider:
     BUCKET_NAME: "corona-api-json-content"
     DDBtable: "coronaapi"
     DDBtable2: "serverlessrepo-s3-to-dynamodb-importer-json-DDBtable-QF81U10PRNS6"
-    AWS_REGION: "eu-central-1"
 
 package:
   include:

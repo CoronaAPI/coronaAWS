@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk')
-AWS.config.region = (process.env.AWS_REGION || 'us-east-1')
+AWS.config.region = (process.env.AWS_REGION || 'eu-central-1')
 const s3 = new AWS.S3()
 
 // Returns object from S3
