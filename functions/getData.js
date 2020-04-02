@@ -42,7 +42,7 @@ exports.handler = async (event, context, callback) => {
           }
 
           // Build params
-          console.log(item)
+          // console.log(item)
           params.RequestItems[ddbTable].push({
             PutRequest: {
               Item: {
@@ -58,7 +58,11 @@ exports.handler = async (event, context, callback) => {
           batchCount++
           console.log('Trying batch: ', batchCount)
           const result = await docClient.batchWrite(params).promise()
-          console.log('Success: ', result)
+          console.log('Success: ',
+            typeof result === 'string'
+              ? result.substr(0, 100)
+              : JSON.stringify(result).substr(0, 100)
+          )
         } catch (err) {
           console.error('Error: ', err)
         }
@@ -80,6 +84,7 @@ exports.handler = async (event, context, callback) => {
   fetch('https://coronadatascraper.com/data.json')
     .then(r => r.json())
     .then(data => {
+      console.log(JSON.stringify(data).substr(0, 50))
       data.forEach(entry => {
         entry.date = stringDate
       })
