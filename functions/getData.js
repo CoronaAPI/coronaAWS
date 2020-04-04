@@ -11,7 +11,10 @@ exports.handler = async (event, context, callback) => {
   const year = today.getFullYear()
   const month = `${today.getMonth() + 1}`.padStart(2, 0)
   const day = `${today.getDate()}`.padStart(2, 0)
+  const minutes = today.getMinutes()
+  const hours = today.getHours()
   const stringDate = [year, month, day].join('-')
+  const updateDate = `${stringDate} ${hours}:${minutes}`
 
   const uploadJSONtoDynamoDB = async (data) => {
     // Separate into batches for upload
@@ -35,10 +38,12 @@ exports.handler = async (event, context, callback) => {
         }
         params.RequestItems[ddbTable] = []
 
-        itemData.forEach(item => {
+        itemData.forEach((item) => {
           for (const key of Object.keys(item)) {
             // An AttributeValue may not contain an empty string
-            if (item[key] === '') { delete item[key] }
+            if (item[key] === '') {
+              delete item[key]
+            }
           }
 
           // Build params
@@ -58,7 +63,8 @@ exports.handler = async (event, context, callback) => {
           batchCount++
           console.log('Trying batch: ', batchCount)
           const result = await docClient.batchWrite(params).promise()
-          console.log('Success: ',
+          console.log(
+            'Success: ',
             typeof result === 'string'
               ? result.substr(0, 100)
               : JSON.stringify(result).substr(0, 100)
@@ -68,9 +74,9 @@ exports.handler = async (event, context, callback) => {
         }
       })
     )
-  }
+  };
 
-  const response = body => {
+  const response = (body) => {
     return {
       statusCode: 200,
       headers: {
@@ -79,14 +85,15 @@ exports.handler = async (event, context, callback) => {
       body: JSON.stringify(body),
       isBase64Encoded: false
     }
-  }
+  };
 
   fetch('https://coronadatascraper.com/data.json')
-    .then(r => r.json())
-    .then(data => {
+    .then((r) => r.json())
+    .then((data) => {
       console.log(JSON.stringify(data).substr(0, 50))
-      data.forEach(entry => {
+      data.forEach((entry) => {
         entry.date = stringDate
+        entry.updated = updateDate
       })
       const result = uploadJSONtoDynamoDB(data)
       if (result) {
@@ -95,4 +102,4 @@ exports.handler = async (event, context, callback) => {
         return context.fail(response({ status: 500, msg: result }))
       }
     })
-}
+};
