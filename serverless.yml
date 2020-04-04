@@ -8,6 +8,8 @@ app: corona-api
 provider:
   name: aws
   runtime: nodejs12.x
+  stage: dev
+  region: eu-central-1
 
   iamRoleStatements:
     - Effect: "Allow"
@@ -21,16 +23,16 @@ provider:
         - "s3:PutObject"
       Resource: "arn:aws:s3:::corona-api-json-content"
 
-  stage: dev
-  region: eu-central-1
-
   environment:
-    REDIS_PASS: ${ssm:/REDIS_PASS~true}
-    REDIS_PORT: ${ssm:/REDIS_PORT~true}
-    REDIS_URL: ${ssm:/REDIS_URL~true}
+    REDIS_PASS: ${ssm:/aws/ssm/REDIS_PASS~true}
+    REDIS_PORT: ${ssm:/aws/ssm/REDIS_PORT~true}
+    REDIS_URL: ${ssm:/aws/ssm/REDIS_URL~true}
     BUCKET_NAME: "corona-api-json-content"
     DDBtable: "corona1"
-    DDBtable2: "serverlessrepo-s3-to-dynamodb-importer-json-DDBtable-QF81U10PRNS6"
+
+  tracing:
+    apiGateway: true
+    lambda: true
 
 package:
   include:
