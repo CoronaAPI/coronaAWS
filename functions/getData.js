@@ -1,6 +1,7 @@
 // https://github.com/jbesw/reinvent-svs214/blob/master/3-dynamodb/importFunction/app.js
 
 exports.handler = async (event, context, callback) => {
+  console.log(event)
   const fetch = require('isomorphic-unfetch')
   const AWS = require('aws-sdk')
   const docClient = new AWS.DynamoDB.DocumentClient()
@@ -74,7 +75,7 @@ exports.handler = async (event, context, callback) => {
         }
       })
     )
-  };
+  }
 
   const response = (body) => {
     return {
@@ -85,7 +86,7 @@ exports.handler = async (event, context, callback) => {
       body: JSON.stringify(body),
       isBase64Encoded: false
     }
-  };
+  }
 
   fetch('https://coronadatascraper.com/data.json')
     .then((r) => r.json())
@@ -102,4 +103,4 @@ exports.handler = async (event, context, callback) => {
         return context.fail(response({ status: 500, msg: result }))
       }
     })
-};
+}
