@@ -65,12 +65,12 @@ exports.handler = (event, context, callback) => {
         try {
           batchCount++
           console.log('Trying batch: ', batchCount)
-          const result = await docClient.batchWrite(params).promise()
+          const dbWrite = await docClient.batchWrite(params).promise()
           console.log(
             'Success: ',
-            typeof result === 'string'
-              ? result.substr(0, 100)
-              : JSON.stringify(result).substr(0, 100)
+            typeof dbWrite === 'string'
+              ? dbWrite.substr(0, 100)
+              : JSON.stringify(dbWrite).substr(0, 100)
           )
         } catch (err) {
           console.error('Error: ', err)
