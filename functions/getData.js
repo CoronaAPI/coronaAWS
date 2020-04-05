@@ -5,7 +5,7 @@ const docClient = new AWS.DynamoDB.DocumentClient()
 const { uuid } = require('uuidv4')
 const dayjs = require('dayjs')
 
-exports.handler = async (event) => {
+exports.handler = (event, context, callback) => {
   const uploadJSONtoDynamoDB = async (data) => {
     const ddbTable = process.env.DDBtable
     // Separate into batches for upload
@@ -58,18 +58,18 @@ exports.handler = async (event) => {
     )
   }
 
-  // const response = (body) => {
-  //   return {
-  //     statusCode: 200,
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(body),
-  //     isBase64Encoded: false
-  //   }
-  // }
+  const response = (body) => {
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body),
+      isBase64Encoded: false
+    }
+  }
 
-  async function checkScraperReport () {
+  async function checkScraperReport() {
     try {
       const r = await fetch('https://coronadatascraper.com/report.json')
       const data = await r.json()
@@ -80,7 +80,7 @@ exports.handler = async (event) => {
     }
   }
 
-  async function getDailyData () {
+  async function getDailyData() {
     try {
       const r = await fetch('https://coronadatascraper.com/data.json')
       const data = await r.json()
@@ -98,7 +98,7 @@ exports.handler = async (event) => {
     }
   }
 
-  async function pushToDb (data) {
+  async function pushToDb(data) {
     const ddbResult = await uploadJSONtoDynamoDB(data)
     console.log('DDBresult: ', ddbResult)
   }
@@ -106,9 +106,9 @@ exports.handler = async (event) => {
   const updated = checkScraperReport()
   if (updated) {
     getDailyData()
-      .then(async data => {
-        await pushToDb(data)
-        return 200
+      .then(data => {
+        pushToDb(data)
+        callback(null, response({ msg: `Successfully Grabbed New Data - ${dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]')}` }))
       })
   }
 }
