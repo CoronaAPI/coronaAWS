@@ -1,14 +1,13 @@
+const fetch = require('isomorphic-unfetch')
+const AWS = require('aws-sdk')
+AWS.config.update({ region: 'eu-central-1' })
+const docClient = new AWS.DynamoDB.DocumentClient()
+const { uuid } = require('uuidv4')
+const dayjs = require('dayjs')
+
 exports.handler = async (event) => {
-  const fetch = require('isomorphic-unfetch')
-  const AWS = require('aws-sdk')
-  AWS.config.update({ region: 'eu-central-1' })
-  const docClient = new AWS.DynamoDB.DocumentClient()
-  const { uuid } = require('uuidv4')
-  const dayjs = require('dayjs')
-
-  const ddbTable = process.env.DDBtable
-
   const uploadJSONtoDynamoDB = async (data) => {
+    const ddbTable = process.env.DDBtable
     // Separate into batches for upload
     const batches = []
     const BATCH_SIZE = 25
@@ -107,8 +106,9 @@ exports.handler = async (event) => {
   const updated = checkScraperReport()
   if (updated) {
     getDailyData()
-      .then(data => {
-        pushToDb(data)
+      .then(async data => {
+        await pushToDb(data)
+        return 200
       })
   }
 }
