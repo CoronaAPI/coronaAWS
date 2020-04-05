@@ -24,9 +24,9 @@ provider:
       Resource: "arn:aws:s3:::corona-api-json-content"
 
   environment:
-    REDIS_PASS: ${ssm:/aws/reference/secretsmanager/dev/coronaapi/REDIS_PASS~true}
-    REDIS_PORT: ${ssm:/aws/reference/secretsmanager/dev/coronaapi/REDIS_PORT~true}
-    REDIS_URL: ${ssm:/aws/reference/secretsmanager/dev/coronaapi/REDIS_URL~true}
+    REDIS_PASS: ${ssm:/aws/dev/coronaapi/REDIS_PASS~true}
+    REDIS_PORT: ${ssm:/aws/dev/coronaapi/REDIS_PORT~true}
+    REDIS_URL: ${ssm:/aws/dev/coronaapi/REDIS_URL~true}
     BUCKET_NAME: "corona-api-json-content"
     DDBtable: "corona1"
 
