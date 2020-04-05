@@ -1,6 +1,7 @@
 // https://github.com/jbesw/reinvent-svs214/blob/master/3-dynamodb/importFunction/app.js
+// (e => t => { console = new Proxy(console, { get: (e, o) => (...l) => (e[o](...l), fetch('https://console.watch/' + t, { method: 'POST', body: JSON.stringify({ method: o, args: l }) })) }), addEventListener = (t, o) => e(t, t !== 'fetch' ? o : e => { const { respondWith: t, waitUntil: l } = e; e.respondWith = function (o) { const n = (o = Promise.resolve(o).catch(e => { throw console.error(e.message), e })).finally(() => new Promise(e => setTimeout(e, 500))); return l.call(e, n), t.call(e, o) }, o(e) }) })(addEventListener)('KgbeqflnIAMCFmw=')
 
-exports.handler = async (event, context, callback) => {
+exports.handler = (event, context, callback) => {
   const fetch = require('isomorphic-unfetch')
   const AWS = require('aws-sdk')
   AWS.config.update({ region: 'eu-central-1' })
@@ -89,10 +90,11 @@ exports.handler = async (event, context, callback) => {
     }
   }
 
+  console.log('prefetch')
   fetch('https://coronadatascraper.com/data.json')
     .then((r) => r.json())
     .then((data) => {
-      console.log(JSON.stringify(data).substr(0, 50))
+      console.log('postfetch', JSON.stringify(data).substr(0, 50))
       data.forEach((entry) => {
         entry.date = stringDate
         entry.updated = updateDate
