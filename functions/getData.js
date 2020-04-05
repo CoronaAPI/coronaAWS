@@ -3,6 +3,7 @@
 exports.handler = async (event, context, callback) => {
   const fetch = require('isomorphic-unfetch')
   const AWS = require('aws-sdk')
+  AWS.config.update({ region: 'eu-central-1' })
   const docClient = new AWS.DynamoDB.DocumentClient()
   const { uuid } = require('uuidv4')
   const ddbTable = process.env.DDBtable
@@ -13,8 +14,9 @@ exports.handler = async (event, context, callback) => {
   const day = `${today.getDate()}`.padStart(2, 0)
   const minutes = today.getMinutes()
   const hours = today.getHours()
+  const seconds = today.getSeconds()
   const stringDate = [year, month, day].join('-')
-  const updateDate = `${stringDate} ${hours}:${minutes}`
+  const updateDate = `${stringDate} ${hours}:${minutes}:${seconds} UTC`
 
   const uploadJSONtoDynamoDB = async (data) => {
     // Separate into batches for upload
