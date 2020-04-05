@@ -1,11 +1,10 @@
 // https://github.com/jbesw/reinvent-svs214/blob/master/3-dynamodb/importFunction/app.js
 
 exports.handler = async (event, context, callback) => {
-  console.log(event)
   const fetch = require('isomorphic-unfetch')
   const AWS = require('aws-sdk')
   const docClient = new AWS.DynamoDB.DocumentClient()
-  const uuidv4 = require('uuid/v4')
+  const { uuid } = require('uuidv4')
   const ddbTable = process.env.DDBtable
 
   const today = new Date()
@@ -52,7 +51,7 @@ exports.handler = async (event, context, callback) => {
           params.RequestItems[ddbTable].push({
             PutRequest: {
               Item: {
-                ID: uuidv4(),
+                ID: uuid(),
                 ...item
               }
             }
