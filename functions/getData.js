@@ -59,16 +59,16 @@ exports.handler = async (event) => {
     )
   }
 
-  const response = (body) => {
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body),
-      isBase64Encoded: false
-    }
-  }
+  // const response = (body) => {
+  //   return {
+  //     statusCode: 200,
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(body),
+  //     isBase64Encoded: false
+  //   }
+  // }
 
   async function checkScraperReport () {
     const r = await fetch('https://coronadatascraper.com/report.json')
