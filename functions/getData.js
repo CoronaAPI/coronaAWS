@@ -1,23 +1,12 @@
-// https://github.com/jbesw/reinvent-svs214/blob/master/3-dynamodb/importFunction/app.js
-// (e => t => { console = new Proxy(console, { get: (e, o) => (...l) => (e[o](...l), fetch('https://console.watch/' + t, { method: 'POST', body: JSON.stringify({ method: o, args: l }) })) }), addEventListener = (t, o) => e(t, t !== 'fetch' ? o : e => { const { respondWith: t, waitUntil: l } = e; e.respondWith = function (o) { const n = (o = Promise.resolve(o).catch(e => { throw console.error(e.message), e })).finally(() => new Promise(e => setTimeout(e, 500))); return l.call(e, n), t.call(e, o) }, o(e) }) })(addEventListener)('KgbeqflnIAMCFmw=')
-
-exports.handler = (event, context, callback) => {
+exports.handler = async (event) => {
   const fetch = require('isomorphic-unfetch')
   const AWS = require('aws-sdk')
   AWS.config.update({ region: 'eu-central-1' })
   const docClient = new AWS.DynamoDB.DocumentClient()
   const { uuid } = require('uuidv4')
-  const ddbTable = process.env.DDBtable
+  const dayjs = require('dayjs')
 
-  const today = new Date()
-  const year = today.getFullYear()
-  const month = `${today.getMonth() + 1}`.padStart(2, 0)
-  const day = `${today.getDate()}`.padStart(2, 0)
-  const minutes = today.getMinutes()
-  const hours = today.getHours()
-  const seconds = today.getSeconds()
-  const stringDate = [year, month, day].join('-')
-  const updateDate = `${stringDate} ${hours}:${minutes}:${seconds} UTC`
+  const ddbTable = process.env.DDBtable
 
   const uploadJSONtoDynamoDB = async (data) => {
     // Separate into batches for upload
@@ -62,19 +51,10 @@ exports.handler = (event, context, callback) => {
         })
 
         // Push to DynamoDB in batches
-        try {
-          batchCount++
-          console.log('Trying batch: ', batchCount)
-          const dbWrite = await docClient.batchWrite(params).promise()
-          console.log(
-            'Success: ',
-            typeof dbWrite === 'string'
-              ? dbWrite.substr(0, 100)
-              : JSON.stringify(dbWrite).substr(0, 100)
-          )
-        } catch (err) {
-          console.error('Error: ', err)
-        }
+        batchCount++
+        console.log('Trying batch: ', batchCount)
+        const result = await docClient.batchWrite(params).promise()
+        console.log('Success: ', result)
       })
     )
   }
@@ -90,20 +70,37 @@ exports.handler = (event, context, callback) => {
     }
   }
 
-  console.log('prefetch')
-  fetch('https://coronadatascraper.com/data.json')
-    .then((r) => r.json())
-    .then((data) => {
-      console.log('postfetch', JSON.stringify(data).substr(0, 50))
-      data.forEach((entry) => {
-        entry.date = stringDate
-        entry.updated = updateDate
-      })
-      const result = uploadJSONtoDynamoDB(data)
-      if (result) {
-        return context.succeed(response({ status: 200, msg: result }))
-      } else {
-        return context.fail(response({ status: 500, msg: result }))
-      }
+  async function checkScraperReport () {
+    const r = await fetch('https://coronadatascraper.com/report.json')
+    const data = await r.json()
+    console.log('date:', data.date)
+    return data.date === dayjs().format('YYYY-M-D')
+  }
+
+  async function getDailyData () {
+    const r = await fetch('https://coronadatascraper.com/data.json')
+    const data = await r.json()
+    const stringDate = dayjs().format('YYYY-MM-DD')
+    const updateDate = dayjs().format('YYYY-MM-DD HH:mm:ss')
+
+    data.forEach(entry => {
+      entry.date = stringDate
+      entry.updated = updateDate
     })
+
+    return data
+  }
+
+  async function pushToDb (data) {
+    const ddbResult = await uploadJSONtoDynamoDB(data)
+    console.log('DDBresult: ', ddbResult)
+  }
+
+  const updated = checkScraperReport()
+  if (updated) {
+    getDailyData()
+      .then(data => {
+        pushToDb(data)
+      })
+  }
 }
