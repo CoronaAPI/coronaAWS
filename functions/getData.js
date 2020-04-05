@@ -71,24 +71,32 @@ exports.handler = async (event) => {
   // }
 
   async function checkScraperReport () {
-    const r = await fetch('https://coronadatascraper.com/report.json')
-    const data = await r.json()
-    console.log('date:', data.date)
-    return data.date === dayjs().format('YYYY-M-D')
+    try {
+      const r = await fetch('https://coronadatascraper.com/report.json')
+      const data = await r.json()
+      console.log('date:', data.date)
+      return data.date === dayjs().format('YYYY-M-D')
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   async function getDailyData () {
-    const r = await fetch('https://coronadatascraper.com/data.json')
-    const data = await r.json()
-    const stringDate = dayjs().format('YYYY-MM-DD')
-    const updateDate = dayjs().format('YYYY-MM-DD HH:mm:ss')
+    try {
+      const r = await fetch('https://coronadatascraper.com/data.json')
+      const data = await r.json()
+      const stringDate = dayjs().format('YYYY-MM-DD')
+      const updateDate = dayjs().format('YYYY-MM-DD HH:mm:ss')
 
-    data.forEach(entry => {
-      entry.date = stringDate
-      entry.updated = updateDate
-    })
+      data.forEach(entry => {
+        entry.date = stringDate
+        entry.updated = updateDate
+      })
 
-    return data
+      return data
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   async function pushToDb (data) {
