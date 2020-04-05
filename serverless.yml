@@ -25,18 +25,21 @@ provider:
     - Effect: "Allow"
       Action:
         - "secretsmanager:GetSecretValue"
-      Resource: "arn:aws:secretsmanager:eu-central-1:392655045323:secret:dev/coronaapi/*"
+      Resource: "arn:aws:secretsmanager:eu-central-1:392655045323:secret:envs"
 
   environment:
-    REDIS_PASS: ${ssm:/aws/reference/secretsmanager/dev/coronaapi/REDIS_PASS~true}
-    REDIS_PORT: ${ssm:/aws/reference/secretsmanager/dev/coronaapi/REDIS_PORT~true}
-    REDIS_URL: ${ssm:/aws/reference/secretsmanager/dev/coronaapi/REDIS_URL~true}
+    REDIS_PASS: ${self:custom.ssm.REDIS_PASS}
+    REDIS_PORT: ${self:custom.ssm.REDIS_PORT}
+    REDIS_URL: ${self:custom.ssm.REDIS_URL}
     BUCKET_NAME: "corona-api-json-content"
     DDBtable: "corona1"
 
   tracing:
     apiGateway: true
     lambda: true
+
+custom:
+  ssm: ${ssm:/aws/reference/secretsmanager/envs~true}
 
 package:
   include:
