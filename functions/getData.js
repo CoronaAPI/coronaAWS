@@ -69,7 +69,7 @@ exports.handler = (event, context, callback) => {
     }
   }
 
-  async function checkScraperReport() {
+  async function checkScraperReport () {
     try {
       const r = await fetch('https://coronadatascraper.com/report.json')
       const data = await r.json()
@@ -80,7 +80,7 @@ exports.handler = (event, context, callback) => {
     }
   }
 
-  async function getDailyData() {
+  async function getDailyData () {
     try {
       const r = await fetch('https://coronadatascraper.com/data.json')
       const data = await r.json()
@@ -98,16 +98,15 @@ exports.handler = (event, context, callback) => {
     }
   }
 
-  async function pushToDb(data) {
+  async function pushToDb (data) {
     const ddbResult = await uploadJSONtoDynamoDB(data)
     console.log('DDBresult: ', ddbResult)
   }
 
-  const updated = checkScraperReport()
-  if (updated) {
+  if (checkScraperReport()) {
     getDailyData()
-      .then(data => {
-        pushToDb(data)
+      .then(async data => {
+        await pushToDb(data)
         callback(null, response({ msg: `Successfully Grabbed New Data - ${dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]')}` }))
       })
   }
