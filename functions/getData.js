@@ -51,9 +51,9 @@ exports.handler = (event, context, callback) => {
 
         // Push to DynamoDB in batches
         batchCount++
-        console.log('Trying batch: ', batchCount)
+        // console.log('Trying batch: ', batchCount)
         const result = await docClient.batchWrite(params).promise()
-        console.log('Success: ', result)
+        // console.log('Success: ', result)
       })
     )
   }
@@ -74,6 +74,7 @@ exports.handler = (event, context, callback) => {
       const r = await fetch('https://coronadatascraper.com/report.json')
       const data = await r.json()
       console.log('date:', data.date)
+      console.log('date:', dayjs().format('YYYY-M-D'))
       return data.date === dayjs().format('YYYY-M-D')
     } catch (err) {
       console.error(err)
@@ -100,14 +101,18 @@ exports.handler = (event, context, callback) => {
 
   async function pushToDb (data) {
     const ddbResult = await uploadJSONtoDynamoDB(data)
-    console.log('DDBresult: ', ddbResult)
   }
 
-  if (checkScraperReport()) {
-    getDailyData()
-      .then(async data => {
-        await pushToDb(data)
-        callback(null, response({ msg: `Successfully Grabbed New Data - ${dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]')}` }))
-      })
-  }
+  checkScraperReport()
+    .then(isDataUpdated => {
+      if (isDataUpdated) {
+        getDailyData()
+          .then(async data => {
+            await pushToDb(data)
+            callback(null, response({ msg: `Successfully Grabbed New Data - ${dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]')}` }))
+          })
+      } else {
+        callback(null, response({ msg: `Upstream datasource not updated - ${dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]')}` }))
+      }
+    })
 }
