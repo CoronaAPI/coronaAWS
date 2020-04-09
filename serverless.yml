@@ -5,6 +5,9 @@ service: corona-api
 org: ndom91
 app: corona-api
 
+plugins:
+  - serverless-webpack
+
 provider:
   name: aws
   runtime: nodejs12.x
@@ -40,6 +43,7 @@ provider:
 
 custom:
   ssm: ${ssm:/aws/reference/secretsmanager/envs~true}
+  webpackIncludeModules: true
 
 package:
   include:
@@ -79,3 +83,12 @@ functions:
       - http:
           path: total
           method: get
+  graphql:
+    handler: functions/graphql/handler.graphqlHandler
+    events:
+    - http:
+        path: graphql
+        method: post
+    - http:
+        path: graphql
+        method: get

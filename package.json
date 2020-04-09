@@ -14,14 +14,23 @@
     "url": "git+https://github.com/ndom91/coronaAWS.git"
   },
   "dependencies": {
-    "aws-sdk": "^2.648.0",
+    "apollo-server-lambda": "^2.12.0",
+    "aws-sdk": "^2.656.0",
     "dayjs": "^1.8.23",
+    "graphql": "^15.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "redis": "^3.0.2",
     "redis-jsonify": "^1.2.0",
     "uuidv4": "^6.0.7"
   },
   "devDependencies": {
-    "standard": "^14.3.3"
+    "@babel/core": "^7.9.0",
+    "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
+    "imports-loader": "^0.7.1",
+    "serverless-webpack": "^5.3.1",
+    "standard": "^14.3.3",
+    "webpack": "^4.42.1",
+    "webpack-node-externals": "^1.6.0"
   }
 }
