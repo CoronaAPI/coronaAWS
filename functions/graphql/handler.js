@@ -20,7 +20,7 @@ const server = new ApolloServer({
     context,
   }),
   playground: {
-    endpoint:'/production/graphql',
+    endpoint:'/dev/graphql',
   },
   tracing: true,
 });
