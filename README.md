@@ -25,9 +25,11 @@ HTTP Corona API based on the great work of [covidatlas/coronadatascraper](https:
 
 5. Login with Serverless `serverless login`
 
-6. Make changes 💪
+6. Develop locally `serverless offline`
 
-7. Deploy with Serverless `serverless deploy --env dev`
+7. Make changes 💪
+
+8. Deploy with Serverless `serverless deploy --env dev`
 
 ## 📐 Architecture
 
