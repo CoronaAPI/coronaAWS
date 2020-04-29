@@ -1,5 +1,7 @@
+import { getDynamoData } from '../utils/database'
+
 export const resolvers = {
     Query: {
-      getCoronaData: (root, args) => 'Hello World',
+      getCoronaData: async (root, args) => await getDynamoData()
     }
   };
