@@ -26,7 +26,10 @@ type DailyCoronaData {
   date: String
   updated: String
   level: String
-  cases: Int
+  cases: Int,
+  deaths: Int
+  active: Int
+  recovered: Int
   countryId: String
   ID: String
   populationDensity: Float
