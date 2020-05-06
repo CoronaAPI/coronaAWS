@@ -86,7 +86,8 @@ exports.handler = function (event, context, callback) {
     const respArray = {
       statusCode: 200,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify(response),
       isBase64Encoded: false

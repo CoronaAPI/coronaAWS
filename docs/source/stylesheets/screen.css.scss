@@ -71,10 +71,23 @@ html, body {
     }
   }
 
+  .sidebar-header-wrapper {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .sidebar-header {
+    color: #fff;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
   // This is the logo at the top of the ToC
   .logo {
     display: block;
-    max-width: 100%;
+    max-width: 50%;
+    margin: 0 auto;
     margin-bottom: $logo-margin;
   }
 
