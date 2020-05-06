@@ -49,6 +49,8 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 | ---- | ----------- |
 | 200 | The available Corona Virus data per country as a JSON array. The array as well as the data for each country is filtered according to the request parameters. |
 
+<embed src="https://jsconsole.com/?fetch('https://data.corona-api.org/v1/daily').then(response%20=%3E%20response.json()).then(data%20=%3E%20console.log(JSON.stringify(data).substr(0,350)))" width="100%" height="400px" />
+
 ```shell
 # With shell, you can just pass the correct header with each request
 curl "https://data.corona-api.org/v1/daily"
