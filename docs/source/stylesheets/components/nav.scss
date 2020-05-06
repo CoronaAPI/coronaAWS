@@ -1,0 +1,26 @@
+.site-header {
+  height: inherit;
+  padding-top: 0;
+
+  nav {
+    margin-left: auto;
+    display: flex;
+    width: 40%;
+    justify-content: space-between;
+
+    a {
+      color: #70cf32;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .active {
+      color: #889096;
+    }    
+  }
+
+  .burger {
+    margin-left:auto;
+    font-size: 28px;
+  }
+}

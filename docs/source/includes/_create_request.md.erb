@@ -1,0 +1,69 @@
+<% resource = build_resource(resource_name) %>
+## Create a new <%= resource.resource_name %>
+
+<% if resource.available? %>
+```ruby
+require 'gecko-ruby'
+gecko = Gecko::Client.new(<OAUTH_ID>, <OAUTH_SECRET>)
+access_token = OAuth2::AccessToken.new(gecko.oauth_client, <ACCESS_TOKEN>)
+gecko.access_token = access_token
+<%- if resource.child_required? || resource.child_nestable? -%>
+ <%=- resource.resource_name %> = gecko.<%= resource.resource_klass %>.build(<%= resource.gecko[:create].except(resource.child.pluralize.to_sym) %>)
+<%- resource.gecko[:create].fetch(resource.child.pluralize.to_sym).each do |child| %>
+<%=- resource.resource_name %>.<%= resource.child.pluralize %>.build(<%= child %>)
+<%- end %>
+<%- else -%>
+<%=- resource.resource_name %> = gecko.<%= resource.resource_klass %>.build(<%= resource.gecko[:create] %>)
+<% end %>
+<%= resource.resource_name %>.save
+```
+<% end %>
+
+```shell
+curl -X POST -H "Content-type: application/json" -H "Authorization: Bearer <ACCESS_TOKEN>"
+https://api.tradegecko.com/<%= resource.resource_path || resource.resource_plural %>/ -d '{"<%= resource.resource_name %>":<%= resource.gecko[:create].to_json %>}'
+```
+
+```json
+{
+  "<%= resource.resource_name %>": <%= json_single %>
+}
+```
+
+Creates a new <%= resource.resource_name %> object.
+<% if resource.child %>
+This endpoint also accepts embedded <%= resource.child.pluralize %>.
+<% end %>
+### Arguments
+
+| Attribute                      | Type          | Description                | Required
+| ------------------------------ | ------------- | -------------------------- | ------------
+<% resource.attributes_for_create.each_value do |value| %>
+  **<%= value[:name] %>**<%= " <span class='private'>private</span>" if value[:private] %><%= " <span class='deprecated'>deprecated</span>" if value[:deprecated] %> | <%= value[:type] %> | <%= value[:description] %> | <%= value[:required] %>
+<% end %>
+
+<% if (child_resource = resource.child_resource) %>
+
+### <%= child_resource.resource_klass %>
+
+| Child Attribute                | Type          | Description                | Required
+| ------------------------------ | ------------- | -------------------------- | ------------
+<% child_resource.attributes_for_create.each_value do |value| %>
+  **<%= value[:name] %>**<%= " <span class='private'>private</span>" if value[:private] %><%= " <span class='deprecated'>deprecated</span>" if value[:deprecated] %> | <%= value[:type] %> | <%= value[:description] %> | <%= value[:required] %>
+<% end %>
+
+<% end %>
+
+<% if resource.extra_table_for_create? %>
+
+### <%= resource.create_extra_table[:title] %>
+
+
+| <%= resource.create_extra_table[:column_headers].join(" | ") %>
+| --- | ----- | --- |
+<% resource.create_extra_table[:columns].each do |columns| %>
+  <%= columns.join(" | ") %>
+<% end %>
+<% end %>
+### HTTP Request
+`POST https://api.tradegecko.com/<%= resource.resource_path || resource.resource_plural %>/`

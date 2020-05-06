@@ -1,0 +1,18 @@
+## <%= t(".resource_klass", scope: resource).titleize %> actions
+
+<%= t(".actions.description", scope: resource) %>
+
+```shell
+curl -X POST -H "Content-type: application/json" -H "Authorization: Bearer <ACCESS_TOKEN>"
+https://api.tradegecko.com/<%= t(".resource_plural", scope: resource) %>/[:<%= t('.resource_name', scope: resource) %>_id]/actions/[:<%= t('.resource_name', scope: resource) %>_action]
+```
+
+| Action                         | Description
+| ------------------------------ | -------------
+<% t(".actions.endpoints", scope: resource).each do |endpoint| %>
+  `<%= endpoint[:endpoint] %>` | <%= endpoint[:description] %>
+<% end %>
+
+<% if t(".enable_customized_actions", scope: resource) == true %>
+  <%= partial "includes/show_customized_actions", locals: { resource: resource } %>
+<% end %>

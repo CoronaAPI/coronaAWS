@@ -26,31 +26,6 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 # /daily
 ## ***GET*** 
 
-**Description:** Get high-level daily data on Corona infections around the world or for a specific country.
-
-### HTTP Request 
-`***GET*** /daily` 
-
-**Parameters**
-
-| Name | Located in | Description | Required | Type |
-| ---- | ---------- | ----------- | -------- | ---- |
-| country | query | Please enter the 3-digit ISO Country Code. For valid codes to use see <a href=https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3 target="_blank">ISO 3166-1 alpha-3</a> (e.g. DEU for Germany). | No | string |
-| state | query | Please enter a *state* name | No | string |
-| county | query | Please enter a *county* name | No | string |
-| city | query | Please enter a valid city name. | No | string |
-| rating | query | Please enter a minimum rating of the data quality based upon (<a href="https://github.com/lazd/coronadatascraper">@lazd/coronadatascraper</a> data rating). The rating takes into account completeness, machine readability and best practices. | No | number |
-| source | query | Enter a source URL. For available sources, please check `/api/datasources` endpoint. | No | string |
-| countryLevelOnly | query | Enter 'true' or 'false' if you would like only country level data (no counties / cities / states). | No | boolean |
-
-**Responses**
-
-| Code | Description |
-| ---- | ----------- |
-| 200 | The available Corona Virus data per country as a JSON array. The array as well as the data for each country is filtered according to the request parameters. |
-
-<embed src="https://jsconsole.com/?fetch('https://data.corona-api.org/v1/daily').then(response%20=%3E%20response.json()).then(data%20=%3E%20console.log(JSON.stringify(data).substr(0,350)))" width="100%" height="400px" />
-
 ```shell
 # With shell, you can just pass the correct header with each request
 curl "https://data.corona-api.org/v1/daily"
@@ -62,7 +37,6 @@ fetch('https://data.corona-api.org/v1/daily')
   .then(response => response.json())
   .then(data => console.log(data))
 ```
-
 
 > Sample Response:   
 
@@ -107,13 +81,55 @@ fetch('https://data.corona-api.org/v1/daily')
 ```
 
 
+**Description:** Get high-level daily data on Corona infections around the world or for a specific country.
+
+### HTTP Request 
+`GET /daily` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| country | query | Please enter the 3-digit ISO Country Code. For valid codes to use see <a href=https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3 target="_blank">ISO 3166-1 alpha-3</a> (e.g. DEU for Germany). | No | string |
+| state | query | Please enter a *state* name | No | string |
+| county | query | Please enter a *county* name | No | string |
+| city | query | Please enter a valid city name. | No | string |
+| rating | query | Please enter a minimum rating of the data quality based upon (<a href="https://github.com/lazd/coronadatascraper">@lazd/coronadatascraper</a> data rating). The rating takes into account completeness, machine readability and best practices. | No | number |
+| source | query | Enter a source URL. For available sources, please check `/api/datasources` endpoint. | No | string |
+| countryLevelOnly | query | Enter 'true' or 'false' if you would like only country level data (no counties / cities / states). | No | boolean |
+
+<aside class='warning'>
+Using these parameters can slow down the API response time.
+</aside>
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | The available Corona Virus data per country as a JSON array. The array as well as the data for each country is filtered according to the request parameters. |
+
+<embed src="https://jsconsole.com/?fetch('https://data.corona-api.org/v1/daily').then(response%20=%3E%20response.json()).then(data%20=%3E%20console.log(%60$%7BJSON.stringify(data).substr(0,350)%7D...%60))" width="100%" height="400px" />
+
+
 # /daily/confirmed
 ## ***GET*** 
 
 **Description:** Get only confirmed daily case numbers
 
+```shell
+# With shell, you can just pass the correct header with each request
+curl "https://data.corona-api.org/v1/daily/confirmed"
+```
+
+```javascript
+
+fetch('https://data.corona-api.org/v1/daily/confirmed')
+  .then(response => response.json())
+  .then(data => console.log(data))
+```
+
 ### HTTP Request 
-`***GET*** /daily/confirmed` 
+`GET /daily/confirmed` 
 
 **Parameters**
 
@@ -138,7 +154,7 @@ fetch('https://data.corona-api.org/v1/daily')
 **Description:** Get only daily recovered numbers
 
 ### HTTP Request 
-`***GET*** /daily/recovered` 
+`GET /daily/recovered` 
 
 **Parameters**
 
@@ -163,7 +179,7 @@ fetch('https://data.corona-api.org/v1/daily')
 **Description:** Get only daily 'deaths' numbers
 
 ### HTTP Request 
-`***GET*** /daily/deaths` 
+`GET /daily/deaths` 
 
 **Parameters**
 
@@ -188,7 +204,7 @@ fetch('https://data.corona-api.org/v1/daily')
 **Description:** Get data over time for a specific country.
 
 ### HTTP Request 
-`***GET*** /timespan` 
+`GET /timespan` 
 
 **Parameters**
 
@@ -209,7 +225,7 @@ fetch('https://data.corona-api.org/v1/daily')
 **Description:** Get Corona data for each country from different data sources.
 
 ### HTTP Request 
-`***GET*** /countries` 
+`GET /countries` 
 
 **Parameters**
 
@@ -229,7 +245,7 @@ fetch('https://data.corona-api.org/v1/daily')
 **Description:** Get a list of datasources available via this API.
 
 ### HTTP Request 
-`***GET*** /datasources` 
+`GET /datasources` 
 
 **Responses**
 
@@ -243,7 +259,7 @@ fetch('https://data.corona-api.org/v1/daily')
 **Description:** Get a list of datasources and their maintainers and contact info.
 
 ### HTTP Request 
-`***GET*** /datasources/details` 
+`GET /datasources/details` 
 
 **Responses**
 
@@ -257,7 +273,7 @@ fetch('https://data.corona-api.org/v1/daily')
 **Description:** Total world figures
 
 ### HTTP Request 
-`***GET*** /total` 
+`GET /total` 
 
 **Responses**
 
@@ -271,7 +287,7 @@ fetch('https://data.corona-api.org/v1/daily')
 **Description:** Get metadata on the REST API under use. That includes information like where to find the code, where to create new tickets or when the underlying data has been updated the last time.
 
 ### HTTP Request 
-`***GET*** /meta` 
+`GET /meta` 
 
 **Responses**
 
@@ -279,4 +295,3 @@ fetch('https://data.corona-api.org/v1/daily')
 | ---- | ----------- |
 | 200 | The metadata on the REST API under use. |
 
-<!-- Converted with the swagger-to-slate https://github.com/lavkumarv/swagger-to-slate -->

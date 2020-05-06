@@ -1,0 +1,95 @@
+.card-list {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+
+.secondary-card{
+  &.study-card {
+    background: none;
+    border: solid 1px $gray-3;
+    border-radius: 5px;
+  }
+
+  .study-blurb {
+    background: none;
+  }
+}
+
+.study-card {
+  width: 32%;
+  background:#4A90E2;
+  border-radius: 5px;
+  display:inline-block;
+  overflow: visible;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .study-card__image-wrapper {
+    position:relative;
+  }
+}
+
+
+.study-blurb {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  background:#F4F4F5;
+  min-height: 260px;
+  padding: 20px;
+  position: relative;
+}
+
+
+.card__sticky-button {
+  position: absolute;
+    bottom: 30px;
+}
+
+@media (max-width: 1000px) {
+    .study-card {
+      width: 48%;
+      margin-top: 15px;
+    }
+}
+
+@media (min-width: 1000px) {
+
+    .study-card {
+      position: relative;
+      & .study-card__image-wrapper {
+        min-height: 230px;
+      }
+
+      & img {
+        position: absolute;
+        bottom: 30px;
+      }
+    }
+
+}
+
+@media (max-width: 575px) {
+  .study-card {
+    border-radius:0;
+  }
+}
+
+@media (max-width: 800px) {
+  .study-card {
+
+    &.secondary-card {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
