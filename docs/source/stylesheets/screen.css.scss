@@ -47,6 +47,15 @@ html, body {
   width: 20px;
 }
 
+.footer-wrapper {
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-right: 5px;
+  }
+}
+
 .toc-wrapper {
   transition: left 0.3s ease-in-out;
 

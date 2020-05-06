@@ -1,6 +1,6 @@
 {
   "name": "corona-api-lambda",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "CoronaAPI",
   "keywords": [
     "AWS",
