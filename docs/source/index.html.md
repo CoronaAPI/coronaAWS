@@ -21,7 +21,7 @@ search: true
 
 An HTTP API serving structured information on COVID-19's march around the globe. 
 
-**Version:** 0.2.0 
+**Version:** 0.2.1 
 
 # /daily
 ## ***GET*** 
