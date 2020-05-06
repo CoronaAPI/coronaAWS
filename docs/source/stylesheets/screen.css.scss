@@ -80,6 +80,12 @@ html, body {
     }
   }
 
+  #toc > li{
+    margin: 8px 0;
+    font-size: 1.1rem;
+    font-weight: 200;
+  }
+
   .sidebar-header-wrapper {
     width: 100%;
     text-align: center;
@@ -102,17 +108,20 @@ html, body {
 
   &>.search {
     position: relative;
+    background: #4c4c4c;
+    border-radius: 5px;
+    margin: 10px;
 
     input {
-      background: $nav-bg;
-      border-width: 0 0 1px 0;
+      background-color: transparent;
+      border-width: 0;
       border-color: $search-box-border-color;
       padding: 6px 0 6px 20px;
       box-sizing: border-box;
       margin: $nav-v-padding $nav-padding;
       width: $nav-width - ($nav-padding*2);
       outline: none;
-      color: $nav-text;
+      color: #fff;
       border-radius: 0; /* ios has a default border radius */
     }
 
@@ -173,22 +182,27 @@ html, body {
     transition-duration: 200ms;
   }
 
+  .toc-link {
+    margin: 0 10px;
+  }
+
   // This is the currently selected ToC entry
   .toc-link.active {
+    border-radius: 5px;
     background-color: $nav-active-bg;
     color: $nav-active-text;
   }
 
   // this is parent links of the currently selected ToC entry
   .toc-link.active-parent {
-    background-color: $nav-active-parent-bg;
+    background-color: transparent;
     color: $nav-active-parent-text;
   }
 
   .toc-list-h2 {
     display: none;
-    background-color: $nav-subitem-bg;
-    font-weight: 500;
+    background-color: transparent;
+    font-weight: 100;
   }
 
   .toc-h2 {
@@ -311,6 +325,8 @@ html, body {
     padding: 0 10px;
     line-height: 30px;
     outline: 0;
+    margin: 5px;
+    border-radius: 5px;
 
     &:active, &:focus {
       background-color: $lang-select-pressed-bg;
