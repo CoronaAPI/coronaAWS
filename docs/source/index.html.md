@@ -22,7 +22,7 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 
 **Version:** 0.0.5 
 
-# /DAILY
+# /daily
 ## ***GET*** 
 
 **Description:** Get high-level daily data on Corona infections around the world or for a specific country.
@@ -48,7 +48,17 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 | ---- | ----------- |
 | 200 | The available Corona Virus data per country as a JSON array. The array as well as the data for each country is filtered according to the request parameters. |
 
-# /DAILY/CONFIRMED
+```shell
+# With shell, you can just pass the correct header with each request
+curl "https://data.corona-api.org/v1/daily"
+```
+
+```javascript
+
+let dailyStats = fetch('https://data.corona-api.org/v1/daily').then(response => response.json()).(data => console.log(data))
+```
+
+# /daily/confirmed
 ## ***GET*** 
 
 **Description:** Get only confirmed daily case numbers
@@ -73,7 +83,7 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 | ---- | ----------- |
 | 200 | The available Corona Virus confirmed cases data, including datasource URL |
 
-# /DAILY/RECOVERED
+# /daily/recovered
 ## ***GET*** 
 
 **Description:** Get only daily recovered numbers
@@ -98,7 +108,7 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 | ---- | ----------- |
 | 200 | The available Corona Virus confirmed cases data, including datasource URL |
 
-# /DAILY/DEATHS
+# /daily/deaths
 ## ***GET*** 
 
 **Description:** Get only daily 'deaths' numbers
@@ -123,7 +133,7 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 | ---- | ----------- |
 | 200 | The available Corona Virus confirmed cases data, including datasource URL |
 
-# /TIMESPAN
+# /timespan
 ## ***GET*** 
 
 **Description:** Get data over time for a specific country.
@@ -144,7 +154,7 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 | ---- | ----------- |
 | 200 | The available COVID-19 data per country as a JSON array. The array of days for the time span requested for the country requested. |
 
-# /COUNTRIES
+# /countries
 ## ***GET*** 
 
 **Description:** Get Corona data for each country from different data sources.
@@ -164,7 +174,7 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 | ---- | ----------- |
 | 200 | The Corona data for each country from different data sources. |
 
-# /DATASOURCES
+# /datasources
 ## ***GET*** 
 
 **Description:** Get a list of datasources available via this API.
@@ -178,7 +188,7 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 | ---- | ----------- |
 | 200 | The list of available sources of the API. |
 
-# /DATASOURCES/DETAILS
+# /datasources/details
 ## ***GET*** 
 
 **Description:** Get a list of datasources and their maintainers and contact info.
@@ -192,7 +202,7 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 | ---- | ----------- |
 | 200 | The list of available sources of the API. |
 
-# /TOTAL
+# /total
 ## ***GET*** 
 
 **Description:** Total world figures
@@ -206,7 +216,7 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 | ---- | ----------- |
 | 200 | Object of total numbers (cases, active, recovered, deaths) |
 
-# /META
+# /meta
 ## ***GET*** 
 
 **Description:** Get metadata on the REST API under use. That includes information like where to find the code, where to create new tickets or when the underlying data has been updated the last time.
