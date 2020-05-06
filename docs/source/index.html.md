@@ -28,29 +28,6 @@ An HTTP API serving structured information on COVID-19's march around the globe.
 
 **Description:** Get high-level daily data on Corona infections around the world or for a specific country.
 
-### HTTP Request 
-`***GET*** /daily` 
-
-**Parameters**
-
-| Name | Located in | Description | Required | Type |
-| ---- | ---------- | ----------- | -------- | ---- |
-| country | query | Please enter the 3-digit ISO Country Code. For valid codes to use see <a href=https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3 target="_blank">ISO 3166-1 alpha-3</a> (e.g. DEU for Germany). | No | string |
-| state | query | Please enter a *state* name | No | string |
-| county | query | Please enter a *county* name | No | string |
-| city | query | Please enter a valid city name. | No | string |
-| rating | query | Please enter a minimum rating of the data quality based upon (<a href="https://github.com/lazd/coronadatascraper">@lazd/coronadatascraper</a> data rating). The rating takes into account completeness, machine readability and best practices. | No | number |
-| source | query | Enter a source URL. For available sources, please check `/api/datasources` endpoint. | No | string |
-| countryLevelOnly | query | Enter 'true' or 'false' if you would like only country level data (no counties / cities / states). | No | boolean |
-
-**Responses**
-
-| Code | Description |
-| ---- | ----------- |
-| 200 | The available Corona Virus data per country as a JSON array. The array as well as the data for each country is filtered according to the request parameters. |
-
-<embed src="https://jsconsole.com/?fetch('https://data.corona-api.org/v1/daily').then(response%20=%3E%20response.json()).then(data%20=%3E%20console.log(JSON.stringify(data).substr(0,350)))" width="100%" height="400px" />
-
 ```shell
 # With shell, you can just pass the correct header with each request
 curl "https://data.corona-api.org/v1/daily"
@@ -62,7 +39,6 @@ fetch('https://data.corona-api.org/v1/daily')
   .then(response => response.json())
   .then(data => console.log(data))
 ```
-
 
 > Sample Response:   
 
@@ -105,6 +81,30 @@ fetch('https://data.corona-api.org/v1/daily')
   ]
 }...
 ```
+
+### HTTP Request 
+`***GET*** /daily` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| country | query | Please enter the 3-digit ISO Country Code. For valid codes to use see <a href=https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3 target="_blank">ISO 3166-1 alpha-3</a> (e.g. DEU for Germany). | No | string |
+| state | query | Please enter a *state* name | No | string |
+| county | query | Please enter a *county* name | No | string |
+| city | query | Please enter a valid city name. | No | string |
+| rating | query | Please enter a minimum rating of the data quality based upon (<a href="https://github.com/lazd/coronadatascraper">@lazd/coronadatascraper</a> data rating). The rating takes into account completeness, machine readability and best practices. | No | number |
+| source | query | Enter a source URL. For available sources, please check `/api/datasources` endpoint. | No | string |
+| countryLevelOnly | query | Enter 'true' or 'false' if you would like only country level data (no counties / cities / states). | No | boolean |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | The available Corona Virus data per country as a JSON array. The array as well as the data for each country is filtered according to the request parameters. |
+
+<embed src="https://jsconsole.com/?fetch('https://data.corona-api.org/v1/daily').then(response%20=%3E%20response.json()).then(data%20=%3E%20console.log(JSON.stringify(data).substr(0,350)))" width="100%" height="400px" />
+
 
 
 # /daily/confirmed
@@ -278,5 +278,3 @@ fetch('https://data.corona-api.org/v1/daily')
 | Code | Description |
 | ---- | ----------- |
 | 200 | The metadata on the REST API under use. |
-
-<!-- Converted with the swagger-to-slate https://github.com/lavkumarv/swagger-to-slate -->
