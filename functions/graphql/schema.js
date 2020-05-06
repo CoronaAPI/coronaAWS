@@ -48,4 +48,4 @@ schema {
   query: Query
 }
 `
-export {schema}
+export { schema }
