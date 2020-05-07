@@ -33,3 +33,5 @@ build/
 _yardoc
 doc/
 .idea/
+
+docs/build/*

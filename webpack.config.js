@@ -1,6 +1,6 @@
-const path = require('path');
-const nodeExternals = require('webpack-node-externals');
-const slsw = require('serverless-webpack');
+const path = require('path')
+const nodeExternals = require('webpack-node-externals')
+const slsw = require('serverless-webpack')
 
 module.exports = {
   entry: slsw.lib.entries,
@@ -15,16 +15,16 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [['env', { targets: { node: '6.10' } }]],
-            },
-          },
-        ],
-      },
-    ],
+              presets: [['env', { targets: { node: '6.10' } }]]
+            }
+          }
+        ]
+      }
+    ]
   },
   output: {
     libraryTarget: 'commonjs',
     path: path.join(__dirname, '.webpack'),
-    filename: '[name].js',
-  },
-};
+    filename: '[name].js'
+  }
+}
