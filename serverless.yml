@@ -65,6 +65,12 @@ functions:
       - http:
           path: meta
           method: get
+  datasources:
+    handler: functions/datasources.handler
+    events:
+      - http:
+          path: datasources
+          method: get
   flushredis:
     handler: functions/flushredis.handler
     events:
