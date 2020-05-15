@@ -45,6 +45,10 @@ provider:
 custom:
   ssm: ${ssm:/aws/reference/secretsmanager/envs~true}
   webpackIncludeModules: true
+  webpack:
+    includeModules: true
+    packager: "npm"
+    webpackConfig: "webpack.config.js"
 
 package:
   include:
