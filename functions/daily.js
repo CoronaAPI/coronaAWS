@@ -84,7 +84,7 @@ exports.handler = function (event, context, callback) {
           console.log('Redis key not found')
           const body = getDynamoData()
           body.then((data) => {
-            console.log('Pre Filter: ', JSON.stringify(data).substr(0, 90))
+            console.log('Pre Filter: ', data.length)
             let returnBody = data
             if (queryKeys !== '') {
               returnBody = data
@@ -97,8 +97,7 @@ exports.handler = function (event, context, callback) {
                 .filter(sourceFilter(source))
             }
             console.log(
-              'Post Filter: ',
-              JSON.stringify(returnBody).substr(0, 100)
+              'Post Filter: ', returnBody.length
             )
             redis.setex(key, 3600, JSON.stringify(returnBody), (err) => {
               if (err) {
