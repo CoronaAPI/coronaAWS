@@ -21,10 +21,13 @@ async function getDynamoData () {
       TableName: process.env.DDBtable
     })
     .promise()
+  const count1 = TableData.Items.length // count1 = 1821
   const body = TableData.Items.filter(
-    (item) => item.date === `${year}-${month}-${day}`
+    // item => item.date === `${year}-${month}-${day}` // = 2020-05-15
+    item => item.date === '2020-05-15'
   )
-  return body
+  const count2 = body.length // count2 = 92
+  return { body, count1, count2 }
 }
 
 exports.handler = function (event, context, callback) {
@@ -69,7 +72,7 @@ exports.handler = function (event, context, callback) {
   let error, response
 
   redis.on('ready', function () {
-    redis.get(key, (err, res) => {
+    redis.get(key, async (err, res) => {
       if (err) {
         redis.quit(() => {
           error = err
@@ -82,34 +85,35 @@ exports.handler = function (event, context, callback) {
           })
         } else {
           console.log('Redis key not found')
-          const body = getDynamoData()
-          body.then((data) => {
-            console.log('Pre Filter: ', data.length)
-            let returnBody = data
-            if (queryKeys !== '') {
-              returnBody = data
-                .map(coronaDataMapper)
-                .filter(ratingFilter(minRating))
-                .filter(countryFilter(countryParam))
-                .filter(stateFilter(stateParam))
-                .filter(countyFilter(countyParam))
-                .filter(cityFilter(cityParam))
-                .filter(sourceFilter(source))
+          const { body, count1, count2 } = await getDynamoData()
+          console.log('count1', count1)
+          console.log('count2', count2)
+
+          console.log('Pre Filter: ', body.length)
+          let returnBody = body
+          if (queryKeys !== '') {
+            returnBody = body
+              .map(coronaDataMapper)
+              .filter(ratingFilter(minRating))
+              .filter(countryFilter(countryParam))
+              .filter(stateFilter(stateParam))
+              .filter(countyFilter(countyParam))
+              .filter(cityFilter(cityParam))
+              .filter(sourceFilter(source))
+          }
+          console.log(
+            'Post Filter: ', returnBody.length
+          )
+          redis.setex(key, 3600, JSON.stringify(returnBody), (err) => {
+            if (err) {
+              redis.quit(() => {
+                error = err
+              })
+            } else {
+              redis.quit(() => {
+                response = returnBody
+              })
             }
-            console.log(
-              'Post Filter: ', returnBody.length
-            )
-            redis.setex(key, 3600, JSON.stringify(returnBody), (err) => {
-              if (err) {
-                redis.quit(() => {
-                  error = err
-                })
-              } else {
-                redis.quit(() => {
-                  response = returnBody
-                })
-              }
-            })
           })
         }
       }
