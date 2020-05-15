@@ -37,6 +37,7 @@ provider:
     REDIS_URL: ${self:custom.ssm.REDIS_URL}
     BUCKET_NAME: "corona-api-json-content"
     DDBtable: "corona1"
+    SLS_DEBUG: "*"
 
   tracing:
     apiGateway: true
