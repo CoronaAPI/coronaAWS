@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "CoronaAPI",
   "scripts": {
-    "dev": "serverless offline start"
+    "dev": "MODE=development NODE_ENV=development serverless offline start"
   },
   "keywords": [
     "AWS",

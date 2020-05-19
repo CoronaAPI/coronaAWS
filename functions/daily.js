@@ -19,45 +19,35 @@ async function getDynamoData() {
 
   // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.NodeJs.04.html
   var params = {
-    TableName: "corona1",
+    TableName: 'corona1',
+    IndexName: 'date-index',
     ExpressionAttributeNames: {
-      "#d": "date-index"
+      '#d': 'date'
     },
     ExpressionAttributeValues: {
-      ":d": { S: `${year}-${month}-${day}` }
+      ':d': `${year}-${month}-${day}`
     },
-    KeyConditionExpression: '#d = :d',
-  };
+    KeyConditionExpression: '#d = :d'
+  }
 
-  dynamo.query(params, function (err, data) {
-    console.log('query results:', err, data)
-
+  const returnData = await dynamo.query(params, function (err, data) {
     if (err) {
-      console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+      console.error('Unable to query. Error:', JSON.stringify(err, null, 2))
     } else {
-      console.log("Query succeeded.");
-      data.Items.forEach(function (item) {
-        console.log(item);
-      });
-      return data.Items
+      console.log('Query succeeded.')
+      // data.Items.forEach(function (item) {
+      //   console.log(item)
+      // })
+      return data
     }
-  });
-  // const TableData = await dynamo
-  //   .scan({
-  //     TableName: process.env.DDBtable
-  //   })
-  //   .promise()
-  // const count1 = TableData.Items.length // count1 = 1821
-  // const body = TableData.Items.filter(
-  //   // item => item.date === `${year}-${month}-${day}` // = 2020-05-15
-  //   item => item.date === '2020-05-15'
-  // )
-  // const count2 = body.length // count2 = 92
-  // return { body, count1, count2 }
+    return returnData
+  })
 }
 
 exports.handler = function (event, context, callback) {
   const redis = require('./utils/redis')()
+  const AWS = require('aws-sdk')
+  const dynamo = new AWS.DynamoDB.DocumentClient()
 
   const today = new Date()
   const year = today.getFullYear()
@@ -65,6 +55,18 @@ exports.handler = function (event, context, callback) {
   const day = `${today.getDate()}`.padStart(2, 0)
   const keyDate = [year, month, day].join('')
   let key = `dailyv1-${keyDate}-`
+
+  var params = {
+    TableName: 'corona1',
+    IndexName: 'date-index',
+    ExpressionAttributeNames: {
+      '#d': 'date'
+    },
+    ExpressionAttributeValues: {
+      ':d': `${year}-${month}-${day}`
+    },
+    KeyConditionExpression: '#d = :d'
+  }
 
   let countryParam = ''
   let minRating = ''
@@ -104,44 +106,47 @@ exports.handler = function (event, context, callback) {
           error = err
         })
       } else {
-        // if (!res) {
-        //   console.log('Redis key found')
-        //   redis.quit(() => {
-        //     response = JSON.parse(res)
-        //   })
-        // } else {
-        console.log('Redis key not found')
-        const body = await getDynamoData()
-        // console.log('count1', count1)
-        // console.log('count2', count2)
-        if (body) {
-          console.log('Pre Filter: ', body.length)
-          let returnBody = body
-          if (queryKeys !== '') {
-            returnBody = body
-              .map(coronaDataMapper)
-              .filter(ratingFilter(minRating))
-              .filter(countryFilter(countryParam))
-              .filter(stateFilter(stateParam))
-              .filter(countyFilter(countyParam))
-              .filter(cityFilter(cityParam))
-              .filter(sourceFilter(source))
-          }
-          console.log(
-            'Post Filter: ', returnBody.length
-          )
-          redis.setex(key, 3600, JSON.stringify(returnBody), (err) => {
+        if (res) {
+          console.log('Redis key found')
+          redis.quit(() => {
+            response = JSON.parse(res)
+          })
+        } else {
+          console.log('Redis key not found')
+          dynamo.query(params, function (err, data) {
             if (err) {
-              redis.quit(() => {
-                error = err
-              })
+              console.error('Unable to query. Error:', JSON.stringify(err, null, 2))
             } else {
-              redis.quit(() => {
-                response = returnBody
+              console.log('Query succeeded.')
+              console.log('Pre Filter: ', data.Items.length)
+              let returnBody = data.Items
+              if (queryKeys !== '') {
+                returnBody = data.Items
+                  .map(coronaDataMapper)
+                  .filter(ratingFilter(minRating))
+                  .filter(countryFilter(countryParam))
+                  .filter(stateFilter(stateParam))
+                  .filter(countyFilter(countyParam))
+                  .filter(cityFilter(cityParam))
+                  .filter(sourceFilter(source))
+              }
+              console.log(
+                'Post Filter: ', returnBody.length
+              )
+              redis.setex(key, 3600, JSON.stringify(returnBody), (err) => {
+                if (err) {
+                  redis.quit(() => {
+                    error = err
+                  })
+                } else {
+                  redis.quit(() => {
+                    response = returnBody
+                  })
+                }
               })
+              return data.Items
             }
           })
-          // }
         }
       }
     })
