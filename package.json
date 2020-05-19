@@ -2,6 +2,9 @@
   "name": "corona-api-lambda",
   "version": "0.2.0",
   "description": "CoronaAPI",
+  "scripts": {
+    "dev": "serverless offline start"
+  },
   "keywords": [
     "AWS",
     "Lambda",

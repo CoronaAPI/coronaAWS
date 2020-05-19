@@ -8,7 +8,7 @@ const {
   cityFilter
 } = require('./utils/functions')
 
-async function getDynamoData () {
+async function getDynamoData() {
   const AWS = require('aws-sdk')
   const dynamo = new AWS.DynamoDB.DocumentClient()
 
@@ -16,18 +16,44 @@ async function getDynamoData () {
   const year = today.getFullYear()
   const month = `${today.getMonth() + 1}`.padStart(2, 0)
   const day = `${today.getDate()}`.padStart(2, 0)
-  const TableData = await dynamo
-    .scan({
-      TableName: process.env.DDBtable
-    })
-    .promise()
-  const count1 = TableData.Items.length // count1 = 1821
-  const body = TableData.Items.filter(
-    // item => item.date === `${year}-${month}-${day}` // = 2020-05-15
-    item => item.date === '2020-05-15'
-  )
-  const count2 = body.length // count2 = 92
-  return { body, count1, count2 }
+
+  // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.NodeJs.04.html
+  var params = {
+    TableName: "corona1",
+    ExpressionAttributeNames: {
+      "#d": "date-index"
+    },
+    ExpressionAttributeValues: {
+      ":d": { S: `${year}-${month}-${day}` }
+    },
+    KeyConditionExpression: '#d = :d',
+  };
+
+  dynamo.query(params, function (err, data) {
+    console.log('query results:', err, data)
+
+    if (err) {
+      console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+    } else {
+      console.log("Query succeeded.");
+      data.Items.forEach(function (item) {
+        console.log(item);
+      });
+      return data.Items
+    }
+  });
+  // const TableData = await dynamo
+  //   .scan({
+  //     TableName: process.env.DDBtable
+  //   })
+  //   .promise()
+  // const count1 = TableData.Items.length // count1 = 1821
+  // const body = TableData.Items.filter(
+  //   // item => item.date === `${year}-${month}-${day}` // = 2020-05-15
+  //   item => item.date === '2020-05-15'
+  // )
+  // const count2 = body.length // count2 = 92
+  // return { body, count1, count2 }
 }
 
 exports.handler = function (event, context, callback) {
@@ -78,17 +104,17 @@ exports.handler = function (event, context, callback) {
           error = err
         })
       } else {
-        if (res) {
-          console.log('Redis key found')
-          redis.quit(() => {
-            response = JSON.parse(res)
-          })
-        } else {
-          console.log('Redis key not found')
-          const { body, count1, count2 } = await getDynamoData()
-          console.log('count1', count1)
-          console.log('count2', count2)
-
+        // if (!res) {
+        //   console.log('Redis key found')
+        //   redis.quit(() => {
+        //     response = JSON.parse(res)
+        //   })
+        // } else {
+        console.log('Redis key not found')
+        const body = await getDynamoData()
+        // console.log('count1', count1)
+        // console.log('count2', count2)
+        if (body) {
           console.log('Pre Filter: ', body.length)
           let returnBody = body
           if (queryKeys !== '') {
@@ -115,6 +141,7 @@ exports.handler = function (event, context, callback) {
               })
             }
           })
+          // }
         }
       }
     })
