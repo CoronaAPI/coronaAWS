@@ -8,62 +8,6 @@ const {
   cityFilter
 } = require('./utils/functions')
 
-async function getDynamoData() {
-  const AWS = require('aws-sdk')
-  const dynamo = new AWS.DynamoDB.DocumentClient()
-
-  const today = new Date()
-  const year = today.getFullYear()
-  const month = `${today.getMonth() + 1}`.padStart(2, 0)
-  const day = `${today.getDate()}`.padStart(2, 0)
-<<<<<<< Updated upstream
-
-  // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.NodeJs.04.html
-  var params = {
-    TableName: 'corona1',
-    IndexName: 'date-index',
-    ExpressionAttributeNames: {
-      '#d': 'date'
-    },
-    ExpressionAttributeValues: {
-      ':d': `${year}-${month}-${day}`
-    },
-    KeyConditionExpression: '#d = :d'
-  }
-
-  const returnData = await dynamo.query(params, function (err, data) {
-    if (err) {
-      console.error('Unable to query. Error:', JSON.stringify(err, null, 2))
-    } else {
-      console.log('Query succeeded.')
-      // data.Items.forEach(function (item) {
-      //   console.log(item)
-      // })
-      return data
-    }
-    return returnData
-  })
-=======
-  const TableData = await dynamo
-    .scan({
-      TableName: process.env.DDBtable
-    })
-    .promise()
-  const count1 = TableData.Items.length // count1 = 1821
-  const returnObj = []
-  TableData.Items.forEach(item => {
-    if (item.date && item.date === '2020-05-15') {
-      returnObj.push(item)
-    } else if (item.updated && item.updated.includes('2020-05-15')) {
-      console.log(typeof item.updated)
-      returnObj.push(item)
-    }
-  })
-  const count2 = returnObj.length // count2 = 92
-  return { returnObj, count1, count2 }
->>>>>>> Stashed changes
-}
-
 exports.handler = function (event, context, callback) {
   const redis = require('./utils/redis')()
   const AWS = require('aws-sdk')
@@ -133,30 +77,7 @@ exports.handler = function (event, context, callback) {
           })
         } else {
           console.log('Redis key not found')
-<<<<<<< Updated upstream
           dynamo.query(params, function (err, data) {
-=======
-          const { returnObj, count1, count2 } = await getDynamoData()
-          console.log('count1', count1)
-          console.log('count2', count2)
-
-          console.log('Pre Filter: ', returnObj.length)
-          let returnBody = returnObj
-          if (queryKeys !== '') {
-            returnBody = returnObj
-              .map(coronaDataMapper)
-              .filter(ratingFilter(minRating))
-              .filter(countryFilter(countryParam))
-              .filter(stateFilter(stateParam))
-              .filter(countyFilter(countyParam))
-              .filter(cityFilter(cityParam))
-              .filter(sourceFilter(source))
-          }
-          console.log(
-            'Post Filter: ', returnBody.length
-          )
-          redis.setex(key, 3600, JSON.stringify(returnBody), (err) => {
->>>>>>> Stashed changes
             if (err) {
               console.error('Unable to query. Error:', JSON.stringify(err, null, 2))
             } else {
