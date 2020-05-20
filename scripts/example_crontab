@@ -1,0 +1,9 @@
+# crontab - ubuntu
+# m h  dom mon dow   command
+
+SLACK_URL="https://hooks.slack.com/services/xxxx/yyyyyy"
+
+01 00 * * * echo date >> /home/ubuntu/api_logs/restart_pm2.log; /home/ubuntu/restart_pm2.sh >> /home/ubuntu/api_logs/restart_pm2.log
+10 1 * * * $HOME/.profile; /opt/coronaaws/scripts/executeScraper.sh $SLACK_URL > /home/ubuntu/api_logs/updateData.log
+32 1 * * * $HOME/.profile; /opt/coronaaws/scripts/pushDataToDynamo.sh $SLACK_URL > /home/ubuntu/api_logs/addData.log
+
