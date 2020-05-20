@@ -1,3 +1,4 @@
+import { getDynamoData } from './utils/database'
 const {
   coronaDataMapper,
   ratingFilter,
@@ -10,8 +11,6 @@ const {
 
 exports.handler = function (event, context, callback) {
   const redis = require('./utils/redis')()
-  const AWS = require('aws-sdk')
-  const dynamo = new AWS.DynamoDB.DocumentClient()
 
   const today = new Date()
   const year = today.getFullYear()
@@ -19,18 +18,6 @@ exports.handler = function (event, context, callback) {
   const day = `${today.getDate()}`.padStart(2, 0)
   const keyDate = [year, month, day].join('')
   let key = `dailyv1-${keyDate}-`
-
-  var params = {
-    TableName: 'corona1',
-    IndexName: 'date-index',
-    ExpressionAttributeNames: {
-      '#d': 'date'
-    },
-    ExpressionAttributeValues: {
-      ':d': `${year}-${month}-${day}`
-    },
-    KeyConditionExpression: '#d = :d'
-  }
 
   let countryParam = ''
   let minRating = ''
@@ -77,7 +64,7 @@ exports.handler = function (event, context, callback) {
           })
         } else {
           console.log('Redis key not found')
-          dynamo.query(params, function (err, data) {
+          getDynamoData((err, data) => {
             if (err) {
               console.error('Unable to query. Error:', JSON.stringify(err, null, 2))
             } else {

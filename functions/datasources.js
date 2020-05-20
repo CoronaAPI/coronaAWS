@@ -1,21 +1,4 @@
-async function getDynamoData () {
-  const AWS = require('aws-sdk')
-  const dynamo = new AWS.DynamoDB.DocumentClient()
-
-  const today = new Date()
-  const year = today.getFullYear()
-  const month = `${today.getMonth() + 1}`.padStart(2, 0)
-  const day = `${today.getDate()}`.padStart(2, 0)
-  const TableData = await dynamo
-    .scan({
-      TableName: process.env.DDBtable
-    })
-    .promise()
-  const body = TableData.Items.filter(
-    (item) => item.date === `${year}-${month}-${day}`
-  )
-  return body
-}
+import { getDynamoData } from './utils/database'
 
 exports.handler = function (event, context, callback) {
   const redis = require('./utils/redis')()
@@ -42,10 +25,10 @@ exports.handler = function (event, context, callback) {
           })
         } else {
           console.log('Redis key not found')
-          const body = getDynamoData()
-          body.then((data) => {
+          getDynamoData((err, data) => {
+            if (err) console.error(err)
             const sources = []
-            data.map(data => sources.push({ source: data.url }))
+            data.Items.map(data => sources.push({ source: data.url }))
             const sourcesArray = [...new Set(sources.map(x => x.source))]
 
             redis.setex(key, 3600, JSON.stringify(sourcesArray), (err) => {

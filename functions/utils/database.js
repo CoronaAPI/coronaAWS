@@ -1,4 +1,4 @@
-export async function getDynamoData() {
+export async function getDynamoData (callback) {
   const AWS = require('aws-sdk')
   const dynamo = new AWS.DynamoDB.DocumentClient()
 
@@ -20,16 +20,5 @@ export async function getDynamoData() {
     KeyConditionExpression: '#d = :d'
   }
 
-  const returnData = await dynamo.query(params, function (err, data) {
-    if (err) {
-      console.error('Unable to query. Error:', JSON.stringify(err, null, 2))
-    } else {
-      console.log('Query succeeded.')
-      // data.Items.forEach(function (item) {
-      //   console.log(item)
-      // })
-      return data
-    }
-    return returnData
-  })
+  await dynamo.query(params, (err, data) => callback(err, data))
 }

@@ -1,5 +1,5 @@
-const { reduceData } = require('./utils/functions')
 import { getDynamoData } from './utils/database'
+const { reduceData } = require('./utils/functions')
 
 exports.handler = function (event, context, callback) {
   const redis = require('./utils/redis')()
@@ -27,12 +27,12 @@ exports.handler = function (event, context, callback) {
           })
         } else {
           console.log('Redis key not found')
-          const body = getDynamoData()
-          body.then((data) => {
+          getDynamoData((err, data) => {
+            if (err) console.error(err)
             console.log('Pre Filter: ', JSON.stringify(data).substr(0, 90))
-            const onlyCounties = data.filter(l => (l.county || l.aggregate === 'county') && !l.city)
-            const onlyStates = data.filter(l => l.state && !l.county)
-            const onlyCountries = data.filter(l => l.country && !l.state && !l.county)
+            const onlyCounties = data.Items.filter(l => (l.county || l.aggregate === 'county') && !l.city)
+            const onlyStates = data.Items.filter(l => l.state && !l.county)
+            const onlyCountries = data.Items.filter(l => l.country && !l.state && !l.county)
             const total = {
               cases: 0,
               active: 0,
@@ -52,7 +52,7 @@ exports.handler = function (event, context, callback) {
                 })
               } else {
                 redis.quit(() => {
-                  response = data
+                  response = total
                 })
               }
             })
