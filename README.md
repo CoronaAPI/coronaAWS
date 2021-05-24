@@ -13,8 +13,6 @@
 
 HTTP Corona API based on the great work of [covidatlas/coronadatascraper](https://github.com/covidatlas/coronadatascraper).
 
-#### 💌 Join our [Slack](https://join.slack.com/t/corona-api/shared_invite/zt-d3q97q52-2~0Jh7YV1WHVDY~TpENVtg)
-
 ## 🏗️ Usage
 
 1. `git clone https://github.com/ndom91/coronaAWS`
@@ -36,16 +34,14 @@ HTTP Corona API based on the great work of [covidatlas/coronadatascraper](https:
 ## 📐 Architecture
 
 ```
-User -- Request --> aws.corona-api.org --> AWS API Gateway --> Lambda Functions -?-> Redis --> DynamoDB 
+User (Request) --> aws.corona-api.org --> AWS API Gateway --> Lambda --> DynamoDB 
+                                                                |
+                                                                └-?-> Redis
 ```
 
 ## ⚙️ Implementations
 
 - R Library [paulvern/covid19]( https://github.com/paulvern/covid19/tree/master/readcorona )
-
-## 📈 Status
-
-[Hyperping](https://status.corona-api.org)
 
 ## 🙏 Contributors
 
